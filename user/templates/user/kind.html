@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block right-panel-content %}
+<h3 style="text-align:center">{{ i.tags }}</h3>
+    {% if not cafeterias %}
+        <h2 class="text-center">没有餐厅</h2>
+    {% endif %}
+{% for cafeteria in cafeterias %}
+<div class="container-fluid">
+	<div class="row clearfix">
+		<div class="col-md-3 column">
+                                <img class="img-thumbnail cafeteria-image" alt="140x140" src="/media/cafeteria_images/{{ cafeteria.pic }}" width=140px
+                         height=140px/>
+		</div>
+		<div class="col-md-7 column">
+			<h3>
+				<a href="{% url 'cafeteria' cafeteria.id %}">	{{ cafeteria.name }}</a>
+			</h3>
+			<p>{{ i.intro | slice:":100" }}......</p>
+			<p>浏览量:{{ cafeteria.num }}</p>
+		</div>
+	</div>
+</div>
+{% endfor %}
+{% endblock %}

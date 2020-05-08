@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block right-panel-content %}
+    <h3 class="text-center">{{ title }}</h3>
+    {% if  not cafeterias %}
+        <h3 class="text-center">对不起没有餐厅,请去给餐厅打分</h3>
+    {% endif %}
+{#    {% if not cafeterias %}#}
+{#        <h2>请选择喜欢的餐厅</h2>#}
+{#    {% endif %}#}
+    {% for cafeteria in cafeterias %}
+
+        <div class="container-fluid">
+            <div class="row clearfix">
+                <div class="col-md-3 column">
+                    <img class="img-thumbnail cafeteria-image" alt="140x140" src="/media/cafeteria_images/{{ cafeteria.pic }}" width=140px
+                         height=140px/>
+                </div>
+                <div class="col-md-7 column">
+                    <h3>
+                        <a href="{% url 'cafeteria' cafeteria.id %}">    {{ cafeteria.name }}</a>
+                    </h3>
+                    <p>{{ cafeteria.intro | slice:":100" }}......</p>
+                    <p>地址:{{ cafeteria.address }}</p>
+                    <p>浏览量:{{ cafeteria.num }} /  收藏量:{{ cafeteria.collect.count }}</p>
+
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    <div class="container-fluid">
+        <ul class="pagination" id="pager">
+            {#上一页按钮开始#}
+            {# 如果当前页有上一页#}
+            {% if cafeterias.has_previous %}
+                {#  当前页的上一页按钮正常使用#}
+                <li class="previous"><a href="{{ path }}?page={{ cafeterias.previous_page_number }}">上一页</a></li>
+            {% else %}
+                {# 当前页的不存在上一页时,上一页的按钮不可用#}
+                <li class="previous disabled"><a href="#">上一页</a></li>
+            {% endif %}
+            {#上一页按钮结束#}
+            {# 页码开始#}
+            <li class="item active"><a href="{{ path }}?page={{ cafeterias.number }}">{{ cafeterias.number }}</a></li>
+            {#            <li class="item"><a href="{{ path }}?page={{ cafeteria.number|add:1 }}">{{ cafeteria.number|add:1 }}</a></li>#}
+            {#            <li class="item"><a href="{{ path }}?page={{ cafeteria.number|add:2 }}">{{ cafeteria.number|add:2 }}</a></li>#}
+            {#页码结束#}
+            {# 下一页按钮开始#}
+            {% if cafeterias.has_next %}
+                <li class="next"><a href="{{ path }}?page={{ cafeterias.next_page_number }}">下一页</a></li>
+            {% else %}
+                <li class="next disabled"><a href="#">下一页</a></li>
+            {% endif %}
+            <li class="item"><a href="#">
+                {{ cafeterias.number }}/{{ cafeterias.paginator.num_pages }}</a>
+            </li>
+
+        </ul>
+    </div>
+{% endblock %}
